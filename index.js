@@ -1,12 +1,16 @@
 
-module.exports = function (opts) {
-  return {
-    type: 'discovery',
-    in: function (options, next) {
-      next()
-    },
-    out: function (req, res, next) {
+module.exports = function (params) {
+  return function (opts, resilient) {
+    var middleware = { type: 'discovery' }
+    
+    middleware.in = function (options, next) {
       next()
     }
+    
+    middleware.out = function (req, res, next) {
+      next()
+    }
+    
+    return middleware
   }
 }
