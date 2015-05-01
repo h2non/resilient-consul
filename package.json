@@ -1,0 +1,48 @@
+{
+  "name": "resilient-consul",
+  "description": "Resilient HTTP middleware for Consul",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": "h2non/resilient-consul",
+  "author": "Tomas Aparicio",
+  "main": "./index.js",
+  "keywords": [
+    "fault",
+    "tolerant",
+    "balance",
+    "ajax",
+    "http",
+    "https",
+    "xhr",
+    "request",
+    "client",
+    "agent",
+    "distributed",
+    "resilience",
+    "reactive",
+    "hydra",
+    "balancer",
+    "rest",
+    "fallback",
+    "consul"
+  ],
+  "directories": {
+    "lib": "./lib"
+  },
+  "bin": {
+    "resilient": "./bin/resilient"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "devDependencies": {
+    "browserify": "^6.3.3",
+    "chai": "^1.9.1",
+    "mocha": "^1.21.3",
+    "nock": "^0.48.0",
+    "uglify-js": "^2.4.15"
+  }
+}
