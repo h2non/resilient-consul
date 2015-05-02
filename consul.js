@@ -2,12 +2,12 @@
 module.exports = function (params) {
   var type = 'discovery'
   
-  function consul(opts, resilient) {
-    function in(options, next) {
+  function consul(options, resilient) {
+    function in(res, next) {
       next()
     }
     
-    function out(req, res, next) {
+    function out(options, next) {
       next()
     }
     
