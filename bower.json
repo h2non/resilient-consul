@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": "h2non/resilient-consul",
   "author": "Tomas Aparicio",
-  "main": "./index.js",
+  "main": "consul.js",
   "keywords": [
     "fault",
     "tolerant",

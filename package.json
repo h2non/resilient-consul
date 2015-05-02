@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": "h2non/resilient-consul",
   "author": "Tomas Aparicio",
-  "main": "./index.js",
+  "main": "consul.js",
   "keywords": [
     "fault",
     "tolerant",
@@ -36,13 +36,12 @@
     "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "make test"
+    "test": "./node_modules/.bin/mocha",
+    "browser": "./node_modules/.bin/uglifyjs consul.js --mangle --source-map consul.min.js.map --source-map-url http://cdn.rawgit.com/h2non/consul/0.1.0/consul.min.js.map > consul.min.js"
   },
   "devDependencies": {
-    "browserify": "^6.3.3",
     "chai": "^1.9.1",
     "mocha": "^1.21.3",
-    "nock": "^0.48.0",
     "uglify-js": "^2.4.15"
   }
 }
