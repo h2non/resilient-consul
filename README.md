@@ -1,6 +1,6 @@
 # resilient-consul
 
-[Resilient](https://github.com/resilient-http/resilient.js) HTTP bidirectional middleware for [Consul](https://www.consul.io) 
+[Consul](https://www.consul.io) bidirectional middleware for [resilient.js](https://github.com/resilient-http/resilient.js) HTTP client
 
 ## License
 
