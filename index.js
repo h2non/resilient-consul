@@ -1,16 +1,21 @@
 
 module.exports = function (params) {
-  return function (opts, resilient) {
-    var middleware = { type: 'discovery' }
-    
-    middleware.in = function (options, next) {
+  consul.type = 'discovery'
+  
+  function consul(opts, resilient) {
+    function in(options, next) {
       next()
     }
     
-    middleware.out = function (req, res, next) {
+    function out(req, res, next) {
       next()
     }
     
-    return middleware
+    return {
+      in: in,
+      out: out
+    }
   }
+
+  return consul
 }
