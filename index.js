@@ -1,8 +1,8 @@
 
 module.exports = function (params) {
-  consul.type = 'discovery'
-  
-  function consul(opts, resilient) {
+  return function consul(opts, resilient) {
+    var type = 'discovery'
+    
     function in(options, next) {
       next()
     }
@@ -13,9 +13,8 @@ module.exports = function (params) {
     
     return {
       in: in,
-      out: out
+      out: out,
+      type: type
     }
   }
-
-  return consul
 }
