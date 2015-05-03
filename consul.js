@@ -1,79 +1,94 @@
-var basePath = '/v1/catalog/service/'
-var requiredParams = ['service', 'servers']
-var consulParams = ['service', 'datacenter', 'protocol']
-
-module.exports = function (params) {
-  var type = 'discovery'
-  params = params || {}
-
-  requiredParams.forEach(function (key) {
-    if (!params[key]) {
-      throw new TypeError('Missing required param: ' + key)
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(['exports'], factory)
+  } else if (typeof exports === 'object') {
+    factory(exports)
+    if (typeof module === 'object' && module !== null) {
+      module.exports = exports = exports.resilientConsul
     }
-  })
-
-  params.basePath = basePath + params.service
-
-  if (params.discoveryService) {
-    params.refreshPath = basePath + params.discoveryService
-    params.enableSelfRefresh = true
+  } else {
+    factory(root)
   }
+}(this, function (exports) {
 
-  function consul(options, resilient) {
-    defineOptions(options)
+  var basePath = '/v1/catalog/service/'
+  var requiredParams = ['service', 'servers']
+  var consulParams = ['service', 'datacenter', 'protocol']
 
-    function inHandler(err, res, next) {
-      if (err) return next()
+  exports.resilientConsul = function (params) {
+    var type = 'discovery'
+    params = params || {}
+
+    requiredParams.forEach(function (key) {
+      if (!params[key]) {
+        throw new TypeError('Missing required param: ' + key)
+      }
+    })
+
+    params.basePath = basePath + params.service
+
+    if (params.discoveryService) {
+      params.refreshPath = basePath + params.discoveryService
+      params.enableSelfRefresh = true
+    }
+
+    function consul(options, resilient) {
+      defineOptions(options)
+
+      function inHandler(err, res, next) {
+        if (err) return next()
+        
+        if (Array.isArray(res.data)) {
+          res.data = mapServers(res.data)
+        }
+
+        next()
+      }
       
-      if (Array.isArray(res.data)) {
-        res.data = mapServers(res.data)
+      function outHandler(options, next) {
+        options.params = options.params || {}
+
+        if (params.datacenter) {
+          options.params.dc = params.datacenter
+        }
+
+        next()
       }
-
-      next()
-    }
-    
-    function outHandler(options, next) {
-      options.params = options.params || {}
-
-      if (params.datacenter) {
-        options.params.dc = params.datacenter
+      
+      return {
+        'in': inHandler,
+        'out': outHandler
       }
-
-      next()
     }
     
-    return {
-      'in': inHandler,
-      'out': outHandler
+    consul.type = type
+    
+    return consul
+
+    function mapServers(list) {
+      var protocol = params.protocol || 'http'
+      
+      return list
+      .filter(function (s) {
+        return s && s.Address
+      })
+      .map(function (s) {
+        if (s.ServiceAddress) {
+          return s.ServiceAddress
+        }      
+        return protocol + '://' + s.Address + ':' + (+s.ServicePort || 80)
+      })
+    }
+
+    function defineOptions(options) {
+      Object.keys(params)
+      .filter(function (key) {
+        return !~consulParams.indexOf(key)
+      })
+      .forEach(function (key) {
+        options.set(key, params[key])
+      })
     }
   }
-  
-  consul.type = type
-  
-  return consul
 
-  function mapServers(list) {
-    var protocol = params.protocol || 'http'
-    
-    return list
-    .filter(function (s) {
-      return s && s.Address
-    })
-    .map(function (s) {
-      if (s.ServiceAddress) {
-        return s.ServiceAddress
-      }      
-      return protocol + '://' + s.Address + ':' + (+s.ServicePort || 80)
-    })
-  }
-
-  function defineOptions(options) {
-    Object.keys(params)
-    .filter(function (key) {
-      return !~consulParams.indexOf(key)
-    })
-    .forEach(function (key) {
-      options.set(key, params[key])
-    })
-  }
-}
+}))
