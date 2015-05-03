@@ -26,12 +26,6 @@
     "fallback",
     "consul"
   ],
-  "directories": {
-    "lib": "./lib"
-  },
-  "bin": {
-    "resilient": "./bin/resilient"
-  },
   "engines": {
     "node": ">= 0.10.0"
   },
