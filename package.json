@@ -36,7 +36,7 @@
     "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha",
+    "test": "./node_modules/.bin/mocha --ui tdd",
     "browser": "./node_modules/.bin/uglifyjs consul.js --mangle --source-map consul.min.js.map --source-map-url http://cdn.rawgit.com/h2non/consul/0.1.0/consul.min.js.map > consul.min.js"
   },
   "devDependencies": {

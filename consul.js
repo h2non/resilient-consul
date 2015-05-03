@@ -1,6 +1,6 @@
 var basePath = '/v1/catalog/service/'
-var defaultService = 'consul'
 var requiredParams = ['service', 'servers']
+var consulParams = ['service', 'datacenter', 'protocol']
 
 module.exports = function (params) {
   var type = 'discovery'
@@ -17,29 +17,63 @@ module.exports = function (params) {
   if (params.discoveryService) {
     params.refreshPath = basePath + params.discoveryService
     params.enableSelfRefresh = true
-  } 
-  else if (params.enableSelfRefresh) {
-    params.refreshPath = basePath + defaultService
   }
 
   function consul(options, resilient) {
+    defineOptions(options)
 
-    function in(err, res, next) {
+    function inHandler(err, res, next) {
       if (err) return next()
+      
+      if (Array.isArray(res.data)) {
+        res.data = mapServers(res.data)
+      }
 
+      next()
     }
     
-    function out(options, next) {
+    function outHandler(options, next) {
+      options.params = options.params || {}
+
+      if (params.datacenter) {
+        options.params.dc = params.datacenter
+      }
+
       next()
     }
     
     return {
-      'in': in,
-      'out': out
+      'in': inHandler,
+      'out': outHandler
     }
   }
   
   consul.type = type
   
   return consul
+
+  function mapServers(list) {
+    var protocol = params.protocol || 'http'
+    
+    return list
+    .filter(function (s) {
+      return s && s.Address
+    })
+    .map(function (s) {
+      if (s.ServiceAddress) {
+        return s.ServiceAddress
+      }      
+      return protocol + '://' + s.Address + ':' + (+s.ServicePort || 80)
+    })
+  }
+
+  function defineOptions(options) {
+    Object.keys(params)
+    .filter(function (key) {
+      return !~consulParams.indexOf(key)
+    })
+    .forEach(function (key) {
+      options.set(key, params[key])
+    })
+  }
 }
