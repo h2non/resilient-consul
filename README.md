@@ -55,6 +55,17 @@ client.get('/', function (err, res) {
 })
 ```
 
+#### Browser usage
+
+If you're running Resilient in the browser, you must enable CORS headers in Consul.
+To do that you can define additional response HTTP headers in the Consul config file:
+
+```
+"http_api_response_headers": {
+  "Access-Control-Allow-Origin": "*"
+}
+```
+
 ## Options
 
 - **service** `string` - Consul service. Required
