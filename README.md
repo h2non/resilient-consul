@@ -1,13 +1,13 @@
 # resilient-consul  [![Build Status](https://travis-ci.org/h2non/resilient-consul.svg?branch=master)](https://travis-ci.org/h2non/resilient-consul)
 
 [resilient.js](https://github.com/resilient-http/resilient.js) HTTP client 
-[middleware](https://github.com/resilient-http/resilient.js#middleware) for [Consul](https://www.consul.io)
+[middleware](https://github.com/resilient-http/resilient.js#middleware-layer) for [Consul](https://www.consul.io)
 
 Works with Consul HTTP API `v1` and resilient.js `+0.3`
 
 ## Installation
 
-### Node
+### Node.js / io.js
 
 ```
 npm install resilient-consul --save
