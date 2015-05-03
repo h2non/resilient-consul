@@ -1,9 +1,24 @@
-# resilient-consul  [![Build Status](https://travis-ci.org/h2non/resilient-consul.svg?branch=master)](https://travis-ci.org/h2non/resilient-consul)
+# resilient-consul  [![Build Status](https://travis-ci.org/h2non/resilient-consul.svg?branch=master)](https://travis-ci.org/h2non/resilient-consul) [![Resilient](https://img.shields.io/badge/I'm-resilient-green.svg?style=flat-square)](http://resilient-http.github.io) 
 
 [resilient.js](https://github.com/resilient-http/resilient.js) HTTP client 
 [middleware](https://github.com/resilient-http/resilient.js#middleware-layer) for [Consul](https://www.consul.io)
 
 Works with Consul HTTP API `v1` and resilient.js `+0.3`
+
+<table>
+<tr>
+<td><b>Name</b></td><td>consul</td>
+</tr>
+<tr>
+<td><b>Type</b></td><td>discovery</td>
+</tr>
+<tr>
+<td><b>Resilient</b></td><td>+0.3</td>
+</tr>
+<tr>
+<td><b>Environments</b></td><td>node.js / io.js / browsers</td>
+</tr>
+</table>
 
 ## Installation
 
