@@ -1,6 +1,7 @@
 # resilient-consul  [![Build Status](https://travis-ci.org/h2non/resilient-consul.svg?branch=master)](https://travis-ci.org/h2non/resilient-consul)
 
-[resilient.js](https://github.com/resilient-http/resilient.js) HTTP client middleware for [Consul](https://www.consul.io)
+[resilient.js](https://github.com/resilient-http/resilient.js) HTTP client 
+[middleware](https://github.com/resilient-http/resilient.js#middleware) for [Consul](https://www.consul.io)
 
 Works with Consul HTTP API `v1` and resilient.js `+0.3`
 
@@ -37,7 +38,7 @@ var client = Resilient()
 client.use(consul({
   // App service name (required)
   service: 'web',
-  // Discovery service name for self discovery (optional)
+  // Service name for self discovery (optional)
   discoveryService: 'consul',
   // Specificy a custom datacenter (optional)
   datacenter: 'ams2',
@@ -74,7 +75,8 @@ To do that you can define additional response HTTP headers in the Consul config 
 - **datacenter** `string` - Custom datacenter to use. If not defined the default one will be used 
 - **protocol** `string` - Transport URI protocol. Default to `http`
 
-Additionally you can pass any of the supported Resilient [discovery options](https://github.com/resilient-http/resilient.js#discovery) via middleware
+Additionally you can pass any of the supported Resilient 
+[discovery options](https://github.com/resilient-http/resilient.js#discovery) via this middleware
 
 ## License
 
