@@ -1,7 +1,7 @@
 # resilient-consul  [![Build Status](https://travis-ci.org/h2non/resilient-consul.svg?branch=master)](https://travis-ci.org/h2non/resilient-consul) [![Resilient](https://img.shields.io/badge/I'm-resilient-green.svg?style=flat-square)](http://resilient-http.github.io) 
 
 [resilient.js](https://github.com/resilient-http/resilient.js) HTTP client 
-[middleware](https://github.com/resilient-http/resilient.js#middleware-layer) for [Consul](https://www.consul.io)
+[middleware](https://github.com/resilient-http/resilient.js#middleware-layer) for [Consul](https://www.consul.io). With this middleware you can use Consul as compatible discovery server in Resilient HTTP clients.
 
 Works with Consul HTTP API `v1` and resilient.js `+0.3`
 
