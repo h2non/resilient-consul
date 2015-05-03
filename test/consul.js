@@ -45,9 +45,7 @@ suite('Consul', function () {
         {
           "Node": "test",
           "Address": "10.1.10.12",
-          "ServiceID": "web",
           "ServiceName": "web",
-          "ServiceTags": null,
           "ServiceAddress": "",
           "ServicePort": 8000
         }
