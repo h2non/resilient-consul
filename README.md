@@ -15,16 +15,19 @@ npm install resilient-consul --save
 
 ### Browser
 
+Via Bower:
 ```
 bower install resilient-consul --save
 ```
 
+Via Component:
 ```
 component install h2non/resilient-consul
 ```
 
-```
-<script src="//cdn.rawgit.com/h2non/resilient-consul/0.1.0/resilient-consul.js"></script>
+Or loading the script directly:
+```html
+<script src="//cdn.rawgit.com/h2non/resilient-consul/0.1.1/resilient-consul.js"></script>
 ```
 
 ## Usage
