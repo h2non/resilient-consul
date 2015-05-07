@@ -13,7 +13,7 @@
 
   var basePath = '/v1/catalog/service/'
   var requiredParams = ['service', 'servers']
-  var consulParams = ['service', 'datacenter', 'protocol']
+  var consulParams = ['service', 'datacenter', 'protocol', 'tag']
 
   exports.resilientConsul = function (params) {
     var type = 'discovery'
@@ -50,6 +50,10 @@
 
         if (params.datacenter) {
           options.params.dc = params.datacenter
+        }
+
+        if (params.tag) {
+          options.params.tag = params.tag
         }
 
         next()
