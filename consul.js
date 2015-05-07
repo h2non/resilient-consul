@@ -16,7 +16,6 @@
   var consulParams = ['service', 'datacenter', 'protocol', 'tag']
 
   exports.resilientConsul = function (params) {
-    var type = 'discovery'
     params = params || {}
 
     requiredParams.forEach(function (key) {
@@ -65,7 +64,7 @@
       }
     }
     
-    consul.type = type
+    consul.type = 'discovery'
     
     return consul
 
