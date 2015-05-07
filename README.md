@@ -91,6 +91,7 @@ To do that you can define additional response HTTP headers in the Consul config 
 - **servers** `array<string>` - List of Consul servers URLs. Required
 - **discoveryService** `string` - Consul discovery service for auto balancing
 - **datacenter** `string` - Custom datacenter to use. If not defined the default one will be used 
+- **tag** `string` - Use a specific tag for the service
 - **protocol** `string` - Transport URI protocol. Default to `http`
 
 Additionally you can pass any of the supported Resilient 
