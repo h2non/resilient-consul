@@ -28,12 +28,13 @@ suite('Consul', function () {
   })
 
   test('out middleware', function (done) {
-    var md = consul({ service: 'test', servers: ['http://test'], datacenter: 'aws' }) 
+    var md = consul({ service: 'test', servers: ['http://test'], datacenter: 'aws', tag: 'foo' }) 
     var options = {}
     
     md(optionsStub)['out'](options, function (err) {
       expect(err).to.be.undefined
       expect(options.params.dc).to.be.equal('aws')
+      expect(options.params.tag).to.be.equal('foo')
       done()
     })
   })
@@ -47,7 +48,8 @@ suite('Consul', function () {
           "Address": "10.1.10.12",
           "ServiceName": "web",
           "ServiceAddress": "",
-          "ServicePort": 8000
+          "ServicePort": 8000,
+          "ServiceTags": ["foo"]
         }
       ]
     }
