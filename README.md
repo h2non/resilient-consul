@@ -42,7 +42,7 @@ component install h2non/resilient-consul
 
 Or loading the script directly:
 ```html
-<script src="//cdn.rawgit.com/h2non/resilient-consul/0.1.1/resilient-consul.js"></script>
+<script src="//cdn.rawgit.com/h2non/resilient-consul/0.1.2/resilient-consul.js"></script>
 ```
 
 ## Usage
@@ -58,8 +58,10 @@ client.use(consul({
   service: 'web',
   // Service name for self discovery (optional)
   discoveryService: 'consul',
-  // Specificy a custom datacenter (optional)
+  // Use a custom datacenter (optional)
   datacenter: 'ams2',
+  // Use a custom service tag (optional)
+  tag: '1.0',
   // Consul servers pool
   servers: [
     'http://demo.consul.io',
