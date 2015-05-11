@@ -42,7 +42,7 @@ component install h2non/resilient-consul
 
 Or loading the script directly:
 ```html
-<script src="//cdn.rawgit.com/h2non/resilient-consul/0.1.2/resilient-consul.js"></script>
+<script src="//cdn.rawgit.com/h2non/resilient-consul/0.1.2/consul.js"></script>
 ```
 
 ## Usage
