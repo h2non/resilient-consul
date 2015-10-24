@@ -18,19 +18,22 @@
   exports.resilientConsul = function (params) {
     params = params || {}
 
-    requiredParams.forEach(function (key) {
-      if (!params[key]) {
-        throw new TypeError('Missing required param: ' + key)
-      }
+    requiredParams.filter(function (key) { 
+      return !params[key] 
+    })
+    .forEach(function (key) {
+      throw new TypeError('Missing required param: ' + key)
     })
 
     params.basePath = basePath + params.service
-    params.mapServers = params.mapServers || mapServers;
+    params.mapServers = params.mapServers || mapServers
 
     if (params.discoveryService) {
       params.refreshPath = basePath + params.discoveryService
       params.enableSelfRefresh = true
     }
+
+    consul.type = 'discovery'
 
     function consul(options, resilient) {
       defineOptions(options)
@@ -64,9 +67,7 @@
         'out': outHandler
       }
     }
-    
-    consul.type = 'discovery'
-    
+        
     return consul
 
     function mapServers(list) {
@@ -79,7 +80,7 @@
       .map(function (s) {
         if (s.ServiceAddress) {
           return s.ServiceAddress
-        }      
+        }
         return protocol + '://' + s.Address + ':' + (+s.ServicePort || 80)
       })
     }

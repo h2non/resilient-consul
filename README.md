@@ -17,13 +17,13 @@ Works with Consul HTTP API `v1` and resilient.js `+0.3`
 <td><b>Resilient</b></td><td>+0.3</td>
 </tr>
 <tr>
-<td><b>Environments</b></td><td>node.js / io.js / browsers</td>
+<td><b>Environments</b></td><td>node.js / browsers</td>
 </tr>
 </table>
 
 ## Installation
 
-### Node.js / io.js
+### Node.js
 
 ```
 npm install resilient-consul --save
@@ -43,7 +43,7 @@ component install h2non/resilient-consul
 
 Or loading the script directly:
 ```html
-<script src="//cdn.rawgit.com/h2non/resilient-consul/0.1.2/consul.js"></script>
+<script src="//cdn.rawgit.com/h2non/resilient-consul/0.1.3/consul.js"></script>
 ```
 
 ## Usage
