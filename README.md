@@ -67,7 +67,13 @@ client.use(consul({
   servers: [
     'http://demo.consul.io',
     'http://demo.consul.io'
-  ]
+  ],
+  // Use a custom mapping function (optional)
+  mapServers: function (list) {
+    // here you can filter/map the services retrieved from Consul
+    // to a list of addresses according to custom logic:
+    return list.map(function (svc) { return svc.ServiceAddress + '/v1' })
+  }
 }))
 
 // Test request
@@ -96,6 +102,7 @@ To do that you can define additional response HTTP headers in the Consul config 
 - **datacenter** `string` - Custom datacenter to use. If not defined the default one will be used 
 - **tag** `string` - Use a specific tag for the service
 - **protocol** `string` - Transport URI protocol. Default to `http`
+- **mapServers** `function` - Custom function for creating the list of service addresses based on the Consul response
 
 Additionally you can pass any of the supported Resilient 
 [discovery options](https://github.com/resilient-http/resilient.js#discovery) via this middleware

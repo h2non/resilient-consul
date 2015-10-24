@@ -62,4 +62,46 @@ suite('Consul', function () {
     })
   })
 
+  test('custom server mapping', function (done) {
+    var proxyTag = /^proxy=/
+    var md = consul({
+      service: 'test',
+      servers: ['http://test'],
+      datacenter: 'aws',
+      mapServers: function (list) {
+        return list.map(function (svc) {
+          return svc.ServiceTags.filter(proxyTag.test.bind(proxyTag))[0].substring(6)
+        })
+      }
+    }) 
+    var res = { 
+      data: [
+        {
+          "Node": "test-1",
+          "Address": "10.1.10.12",
+          "ServiceName": "web",
+          "ServiceAddress": "",
+          "ServicePort": 8000,
+          "ServiceTags": ["foo", "proxy=https://proxy.com/web/1"]
+        }, {
+          "Node": "test-2",
+          "Address": "10.1.10.13",
+          "ServiceName": "web",
+          "ServiceAddress": "",
+          "ServicePort": 8000,
+          "ServiceTags": ["foo", "proxy=https://proxy.com/web/2"]
+        }
+      ]
+    }
+    
+    md(optionsStub)['in'](null, res, function (err) {
+      expect(err).to.be.undefined
+      expect(res.data).to.be.an('array')
+      expect(res.data.length).to.equal(2)
+      expect(res.data[0]).to.be.equal('https://proxy.com/web/1')
+      expect(res.data[1]).to.be.equal('https://proxy.com/web/2')
+      done()
+    })
+  })
+
 })
