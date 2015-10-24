@@ -13,7 +13,7 @@
 
   var basePath = '/v1/catalog/service/'
   var requiredParams = ['service', 'servers']
-  var consulParams = ['service', 'datacenter', 'protocol', 'tag']
+  var consulParams = ['service', 'datacenter', 'protocol', 'tag', 'mapServers']
 
   exports.resilientConsul = function (params) {
     params = params || {}
@@ -25,6 +25,7 @@
     })
 
     params.basePath = basePath + params.service
+    params.mapServers = params.mapServers || mapServers;
 
     if (params.discoveryService) {
       params.refreshPath = basePath + params.discoveryService
@@ -38,7 +39,7 @@
         if (err) return next()
         
         if (Array.isArray(res.data)) {
-          res.data = mapServers(res.data)
+          res.data = params.mapServers(res.data)
         }
 
         next()
