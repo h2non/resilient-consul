@@ -101,7 +101,7 @@ To do that you can define additional response HTTP headers in the Consul config 
 
 - **service** `string` - Consul service. Required
 - **servers** `array<string>` - List of Consul servers URLs. Required
-- **discoveryService** `string` - Consul discovery service for auto balancing
+- **discoveryService** `string` - Consul discovery service for self discovery (e.g: consul)
 - **datacenter** `string` - Custom datacenter to use. If not defined the default one will be used 
 - **tag** `string` - Use a specific tag for the service
 - **onlyHealthy** `boolean` - Use Consul's health check endpoint instead of the catalog to retrieve only services with passing health checks. Default to `false`
