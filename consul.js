@@ -11,9 +11,8 @@
   }
 }(this, function (exports) {
 
-  var basePath = '/v1/catalog/service/'
   var requiredParams = ['service', 'servers']
-  var consulParams = ['service', 'datacenter', 'protocol', 'tag', 'mapServers']
+  var consulParams = ['service', 'datacenter', 'protocol', 'tag', 'mapServers', 'onlyHealthy']
 
   exports.resilientConsul = function (params) {
     params = params || {}
@@ -25,8 +24,12 @@
       throw new TypeError('Missing required param: ' + key)
     })
 
+    var basePath = params.onlyHealthy ? '/v1/health/service/' : '/v1/catalog/service/'
+
     params.basePath = basePath + params.service
-    params.mapServers = params.mapServers || mapServers
+    if (!params.mapServers) {
+      params.mapServers = params.onlyHealthy ? mapServersFromHealthEndpoint : mapServersFromCatalogEndpoint
+    }
 
     if (params.discoveryService) {
       params.refreshPath = basePath + params.discoveryService
@@ -55,6 +58,10 @@
           options.params.dc = params.datacenter
         }
 
+        if (params.onlyHealthy) {
+          options.params.passing = true
+        }
+
         if (params.tag) {
           options.params.tag = params.tag
         }
@@ -70,7 +77,15 @@
         
     return consul
 
-    function mapServers(list) {
+    function mapServersFromHealthEndpoint(list) {
+      var protocol = params.protocol || 'http'
+      
+      return list.map(function (s) {
+        return protocol + '://' + s.Service.Address + ':' + (+s.Service.Port || 80)
+      })
+    }
+
+    function mapServersFromCatalogEndpoint(list) {
       var protocol = params.protocol || 'http'
       
       return list

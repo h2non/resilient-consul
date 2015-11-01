@@ -68,10 +68,13 @@ client.use(consul({
     'http://demo.consul.io',
     'http://demo.consul.io'
   ],
+  // Use Consul's health check endpoint instead of the catalog
+  // to retrieve only services with passing health checks (optional)
+  onlyHealthy: false,
   // Use a custom mapping function (optional)
   mapServers: function (list) {
     // here you can filter/map the services retrieved from Consul
-    // to a list of addresses according to custom logic:
+    // to a list of addresses according to custom logic (optional)
     return list.map(function (svc) { return svc.ServiceAddress + '/v1' })
   }
 }))
@@ -101,6 +104,7 @@ To do that you can define additional response HTTP headers in the Consul config 
 - **discoveryService** `string` - Consul discovery service for auto balancing
 - **datacenter** `string` - Custom datacenter to use. If not defined the default one will be used 
 - **tag** `string` - Use a specific tag for the service
+- **onlyHealthy** `boolean` - Use Consul's health check endpoint instead of the catalog to retrieve only services with passing health checks. Default to `false`
 - **protocol** `string` - Transport URI protocol. Default to `http`
 - **mapServers** `function` - Custom function for creating the list of service addresses based on the Consul response
 

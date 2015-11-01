@@ -35,6 +35,20 @@ suite('Consul', function () {
       expect(err).to.be.undefined
       expect(options.params.dc).to.be.equal('aws')
       expect(options.params.tag).to.be.equal('foo')
+      expect(options.params.passing).to.be.undefined
+      done()
+    })
+  })
+
+  test('out middleware using health', function (done) {
+    var md = consul({ service: 'test', servers: ['http://test'], datacenter: 'aws', tag: 'foo', onlyHealthy: true }) 
+    var options = {}
+    
+    md(optionsStub)['out'](options, function (err) {
+      expect(err).to.be.undefined
+      expect(options.params.dc).to.be.equal('aws')
+      expect(options.params.tag).to.be.equal('foo')
+      expect(options.params.passing).to.be.true
       done()
     })
   })
@@ -50,6 +64,56 @@ suite('Consul', function () {
           "ServiceAddress": "",
           "ServicePort": 8000,
           "ServiceTags": ["foo"]
+        }
+      ]
+    }
+    
+    md(optionsStub)['in'](null, res, function (err) {
+      expect(err).to.be.undefined
+      expect(res.data).to.be.an('array')
+      expect(res.data[0]).to.be.equal('http://10.1.10.12:8000')
+      done()
+    })
+  })
+
+  test('in middleware using health', function (done) {
+    var md = consul({ service: 'test', servers: ['http://test'], datacenter: 'aws', onlyHealthy: true }) 
+    var res = { 
+      data: [
+        {
+          "Node": {
+            "Node": "test",
+            "Address": "10.1.10.12"
+          },
+          "Service": {
+            "ID": "test:web:8000",
+            "Service": "web",
+            "Tags": null,
+            "Address": "10.1.10.12",
+            "Port": 8000
+          },
+          "Checks": [
+            {
+              "Node": "test",
+              "CheckID": "service:test:web:8000",
+              "Name": "Service 'web' check",
+              "Status": "passing",
+              "Notes": "",
+              "Output": "HTTP GET http://10.1.10.12:8000/healthcheck: 200 OK Output: {\"message\":\"ok\"}",
+              "ServiceID": "test:web:8000",
+              "ServiceName": "web"
+            },
+            {
+              "Node": "test",
+              "CheckID": "serfHealth",
+              "Name": "Serf Health Status",
+              "Status": "passing",
+              "Notes": "",
+              "Output": "Agent alive and reachable",
+              "ServiceID": "",
+              "ServiceName": ""
+            }
+          ]
         }
       ]
     }
