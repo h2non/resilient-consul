@@ -35,8 +35,8 @@
       params.enableSelfRefresh = true
     }
 
+    // Middleware constructor function
     function consul (options, resilient) {
-      // Define resilient scope only options
       defineResilientOptions(params, options)
 
       return {

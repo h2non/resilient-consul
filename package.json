@@ -1,7 +1,7 @@
 {
   "name": "resilient-consul",
   "description": "Resilient HTTP middleware for Consul service discovery and balancing",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "MIT",
   "repository": "h2non/resilient-consul",
   "author": "Tomas Aparicio",
