@@ -10,41 +10,40 @@
     factory(root)
   }
 }(this, function (exports) {
-
   var requiredParams = ['service', 'servers']
   var consulParams = ['service', 'datacenter', 'protocol', 'tag', 'mapServers', 'onlyHealthy']
-  
+
   exports.resilientConsul = function (params) {
     params = validateParams(params || {})
 
     // Use the built-in servers mapper, if required
-    var mapServers = params.mapServers || (params.onlyHealthy 
-      ? mapServersFromHealthEndpoint 
-      : mapServersFromCatalogEndpoint)
+    var mapServers = params.mapServers || (params.onlyHealthy
+        ? mapServersFromHealthEndpoint
+        : mapServersFromCatalogEndpoint)
 
     // Define Consul base path based on the lookup type
-    var basePath = params.onlyHealthy 
-      ? '/v1/health/service/' 
+    var basePath = params.onlyHealthy
+      ? '/v1/health/service/'
       : '/v1/catalog/service/'
 
     // Define the service specific base path
     params.basePath = basePath + params.service
-    
+
     // Enable self discovery capatibility
     if (params.discoveryService) {
       params.refreshPath = basePath + params.discoveryService
       params.enableSelfRefresh = true
     }
 
-    function consul(options, resilient) {
-      // Define resilient scope only options 
+    function consul (options, resilient) {
+      // Define resilient scope only options
       defineResilientOptions(params, options)
-    
+
       return {
         // Incoming traffic middleware
-        'in': function inHandler(err, res, next) {
+        'in': function inHandler (err, res, next) {
           if (err) return next()
-          
+
           if (Array.isArray(res.data)) {
             res.data = mapServers(res.data)
           }
@@ -52,7 +51,7 @@
           next()
         },
         // Outgoing traffic middleware
-        'out': function outHandler(options, next) {
+        'out': function outHandler (options, next) {
           options.params = options.params || {}
 
           if (params.datacenter) {
@@ -71,32 +70,32 @@
         }
       }
     }
-     
+
     // Define middleware type
     consul.type = 'discovery'
 
     // Expose the middleware function
     return consul
 
-    function hasAddress(svc) {
+    function hasAddress (svc) {
       return svc && svc.Address
     }
 
-    function mapServersFromHealthEndpoint(list) {
-      return list.map(function buildServiceUrl(s) {
+    function mapServersFromHealthEndpoint (list) {
+      return list.map(function buildServiceUrl (s) {
         return (params.protocol || 'http') + '://' + s.Service.Address + ':' + (+s.Service.Port || 80)
       })
     }
 
-    function mapServersFromCatalogEndpoint(list) {
-      return list.filter(hasAddress).map(function buildServiceUrl(s) {
+    function mapServersFromCatalogEndpoint (list) {
+      return list.filter(hasAddress).map(function buildServiceUrl (s) {
         return (params.protocol || 'http') + '://' + (s.ServiceAddress || s.Address) + ':' + (+s.ServicePort || 80)
       })
     }
   }
 
-  function validateParams(params) {
-    var missing = requiredParams.filter(function (key) { 
+  function validateParams (params) {
+    var missing = requiredParams.filter(function (key) {
       return !params[key]
     })
 
@@ -107,7 +106,7 @@
     return params
   }
 
-  function defineResilientOptions(params, options) {
+  function defineResilientOptions (params, options) {
     Object.keys(params)
     .filter(function (key) {
       return !~consulParams.indexOf(key)

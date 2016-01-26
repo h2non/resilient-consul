@@ -30,12 +30,21 @@
     "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --ui tdd",
-    "browser": "./node_modules/.bin/uglifyjs consul.js --mangle --source-map consul.min.js.map --source-map-url http://cdn.rawgit.com/h2non/consul/$VERSION/consul.min.js.map > consul.min.js"
+    "test": "standard consul.js test/consul.js && mocha --ui tdd",
+    "browser": "uglifyjs consul.js --mangle --source-map consul.min.js.map --source-map-url http://cdn.rawgit.com/h2non/consul/$VERSION/consul.min.js.map > consul.min.js"
   },
   "devDependencies": {
     "chai": "^1.9.1",
     "mocha": "^1.21.3",
+    "standard": "^5.4.1",
     "uglify-js": "^2.4.15"
+  },
+  "standard": {
+    "globals": [
+      "define",
+      "suite",
+      "beforeEach",
+      "test"
+    ]
   }
 }
