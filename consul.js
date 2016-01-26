@@ -78,20 +78,20 @@
     // Expose the middleware function
     return consul
 
-    function buildServiceUrl(svc) {
-      return (params.protocol || 'http') + '://' + (svc.ServiceAddress || svc.Address) + ':' + (+svc.ServicePort || 80)
-    }
-    
     function hasAddress(svc) {
       return svc && svc.Address
     }
-    
+
     function mapServersFromHealthEndpoint(list) {
-      return list.map(buildServiceUrl)
+      return list.map(function buildServiceUrl(s) {
+        return (params.protocol || 'http') + '://' + s.Service.Address + ':' + (+s.Service.Port || 80)
+      })
     }
 
     function mapServersFromCatalogEndpoint(list) {
-      return list.filter(hasAddress).map(buildServiceUrl)
+      return list.filter(hasAddress).map(function buildServiceUrl(s) {
+        return (params.protocol || 'http') + '://' + (s.ServiceAddress || s.Address) + ':' + (+s.ServicePort || 80)
+      })
     }
   }
 
