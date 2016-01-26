@@ -53,7 +53,7 @@
         },
         // Outgoing traffic middleware
         'out': function outHandler(options, next) {
-          options.params = options.params || {}
+          options.params = options.params || {}
 
           if (params.datacenter) {
             options.params.dc = params.datacenter
@@ -78,27 +78,20 @@
     // Expose the middleware function
     return consul
 
+    function buildServiceUrl(svc) {
+      return (params.protocol || 'http') + '://' + (svc.ServiceAddress || svc.Address) + ':' + (+svc.ServicePort || 80)
+    }
+    
+    function hasAddress(svc) {
+      return svc && svc.Address
+    }
+    
     function mapServersFromHealthEndpoint(list) {
-      var protocol = params.protocol || 'http'
-
-      return list.map(function (s) {
-        return protocol + '://' + s.Service.Address + ':' + (+s.Service.Port || 80)
-      })
+      return list.map(buildServiceUrl)
     }
 
     function mapServersFromCatalogEndpoint(list) {
-      var protocol = params.protocol || 'http'
-      
-      return list
-      .filter(function (s) {
-        return s && s.Address
-      })
-      .map(function (s) {
-        if (s.ServiceAddress) {
-          return s.ServiceAddress
-        }
-        return protocol + '://' + s.Address + ':' + (+s.ServicePort || 80)
-      })
+      return list.filter(hasAddress).map(buildServiceUrl)
     }
   }
 
