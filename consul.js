@@ -78,7 +78,7 @@
     return consul
 
     function hasAddress (svc) {
-      return svc && svc.Address
+      return svc && (svc.Address || s.ServiceAddress)
     }
 
     function mapServersFromHealthEndpoint (list) {
