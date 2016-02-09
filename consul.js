@@ -44,7 +44,10 @@
         'in': function inHandler (err, res, next) {
           if (err) return next()
 
-          if (Array.isArray(res.data)) {
+          // resilient.js sometimes calls the middleware function more than once, with the output
+          // of the previous invokation; checking here the type of the items in the response to
+          // only call `mapServers` with service objects, not URLs (strings)
+          if (Array.isArray(res.data) && Object(res.data[0]) === res.data[0]) {
             res.data = mapServers(res.data)
           }
 
@@ -77,18 +80,14 @@
     // Expose the middleware function
     return consul
 
-    function hasAddress (svc) {
-      return svc && (svc.Address || svc.ServiceAddress)
-    }
-
     function mapServersFromHealthEndpoint (list) {
-      return list.map(function buildServiceUrl (s) {
+      return list.map(function buildHealthServiceUrl (s) {
         return (params.protocol || 'http') + '://' + s.Service.Address + ':' + (+s.Service.Port || 80)
       })
     }
 
     function mapServersFromCatalogEndpoint (list) {
-      return list.filter(hasAddress).map(function buildServiceUrl (s) {
+      return list.map(function buildCatalogServiceUrl (s) {
         return (params.protocol || 'http') + '://' + (s.ServiceAddress || s.Address) + ':' + (+s.ServicePort || 80)
       })
     }
